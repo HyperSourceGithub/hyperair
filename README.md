@@ -1,2 +1,2 @@
-# hyperair
-a simple pygame flight sim
+# HyperAir
+a simple flight sim made with pygame.
