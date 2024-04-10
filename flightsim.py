@@ -98,14 +98,17 @@ ground_color = (34, 139, 34)  # Green color for the ground
 # Define ground rectangle
 ground_rect = pygame.Rect(0, ground_level, screen.get_width(), screen.get_height() - ground_level)
 
+# Define ground level
+ground_level = screen.get_height()
+
+# Draw ground plane
+pygame.draw.rect(screen, ground_color, (0, ground_level, screen.get_width(), screen.get_height() - ground_level))
+
 # Game Loop
 running = True
 clock = pygame.time.Clock()
 while running:
     dt = clock.tick(60) / 1000.0  # Get the time elapsed since the last frame (in seconds)
-
-    # Define ground level
-    ground_level = screen.get_height()  # Set ground level at the bottom of the screen
 
     # Event handling
     for event in pygame.event.get():
@@ -171,6 +174,9 @@ while running:
     elif weather_phase == "stormy":
         screen.fill((107, 107, 107))  # Black
 
+    # Draw ground plane at altitude zero
+    pygame.draw.rect(screen, ground_color, (0, ground_level, screen.get_width(), screen.get_height() - ground_level))
+
     # Add new rain particles if weather is rainy or stormy
     if weather_phase in ["rainy", "stormy"]:
         for _ in range(10):
@@ -223,11 +229,11 @@ while running:
     screen.blit(speedlock_label, (1, 60))
     screen.blit(altitude_text, (1, 80))
 
-    # Draw ground plane
-    pygame.draw.rect(screen, ground_color, ground_rect)
+
 
     # Update the display
     pygame.display.flip()
 
 # Quit Pygame
 pygame.quit()
+
