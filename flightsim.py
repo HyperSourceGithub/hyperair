@@ -1,4 +1,10 @@
-import pygame
+try:
+    import pygame
+except Exception as e:
+    print("Oh no! Pygame is missing!")
+    print("Use `pip install pygame` to install it.")
+    exit()
+ 
 import math
 import random
 
