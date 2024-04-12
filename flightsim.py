@@ -29,7 +29,7 @@ cloud_spawn_probabilities = {
 }
 
 # plane images for cycle
-planes = ["plane.png", "plane2.png", "plane3.png", "plane4.png"]
+planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/plane4.png"]
 
 # Function to rotate an image
 def rotate_image(image, angle):
@@ -67,7 +67,7 @@ screen = pygame.display.set_mode((1000, 800))  # (width, height)
 pygame.display.set_caption("HyperAir v1.0.1")
 
 # Set up fonts
-font = pygame.font.Font("courierprime.ttf", 15)  # (font, size)
+font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
 
 # Load the image of the plane
 plane_image = pygame.image.load(planes[0])
@@ -83,10 +83,10 @@ plane_y = (screen.get_height() - plane_rect.height) / 2
 plane_rect.topleft = (plane_x, plane_y)
 
 # Load the cloud image
-cloud_image = pygame.image.load("cloud.png")
+cloud_image = pygame.image.load("assets/cloud.png")
 
 # Load the icon image
-icon_image = pygame.image.load("jetengine.png")
+icon_image = pygame.image.load("assets/jetengine.png")
 
 # Set the window icon
 pygame.display.set_icon(icon_image)
