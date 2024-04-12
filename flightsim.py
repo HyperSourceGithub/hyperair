@@ -65,7 +65,7 @@ pygame.init()
 
 # Set up the display window
 screen = pygame.display.set_mode((1000, 800))  # (width, height)
-pygame.display.set_caption("HyperAir v1.0.1")
+pygame.display.set_caption("HyperAir v1.0.2")
 
 # Set up fonts
 font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
