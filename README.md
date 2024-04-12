@@ -1,5 +1,5 @@
 # HyperAir
-Welcome to HyperAir, Pilot! Navigate multiple planes (current count: 1) through various weather... for an endless amount of time. <br />
+Welcome to HyperAir, Pilot! Navigate multiple planes (current count: 4) through various weather... for an endless amount of time. <br />
 impressive, huh? <br />
 don't worry, because there's gonna be more!
 
