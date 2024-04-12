@@ -1,6 +1,6 @@
 try:
     import pygame
-except Exception as e:
+except ImportError as e:
     print("Oh no! Pygame is missing!")
     print("Use `pip install pygame` to install it.")
     exit()
@@ -12,7 +12,7 @@ import random
 speed = 0
 pitch = 0
 clouds = []
-weather_phase = "rainy"  # Initial weather phase
+weather_phase = "clear"  # Initial weather phase
 speedlock = False
 
 # Colors
@@ -95,26 +95,17 @@ title = font.render("[Flight Sim]", True, gray)
 speedtxt = font.render(f"[Speed: {speed:.2f}]", True, gray)
 weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, gray)
 
-# Define ground level
-ground_level = screen.get_height()  # Set ground level at the bottom of the screen
-
 # Define ground color
 ground_color = (34, 139, 34)  # Green color for the ground
-
-# Define ground rectangle
-ground_rect = pygame.Rect(0, ground_level, screen.get_width(), screen.get_height() - ground_level)
-
-# Define ground level
-ground_level = screen.get_height()
-
-# Draw ground plane
-pygame.draw.rect(screen, ground_color, (0, ground_level, screen.get_width(), screen.get_height() - ground_level))
 
 # Game Loop
 running = True
 clock = pygame.time.Clock()
 while running:
     dt = clock.tick(60) / 1000.0  # Get the time elapsed since the last frame (in seconds)
+
+    # Define ground level
+    ground_level = screen.get_height()  # Set ground level at the bottom of the plane
 
     # Event handling
     for event in pygame.event.get():
@@ -180,9 +171,6 @@ while running:
     elif weather_phase == "stormy":
         screen.fill((107, 107, 107))  # Black
 
-    # Draw ground plane at altitude zero
-    pygame.draw.rect(screen, ground_color, (0, ground_level, screen.get_width(), screen.get_height() - ground_level))
-
     # Add new rain particles if weather is rainy or stormy
     if weather_phase in ["rainy", "stormy"]:
         for _ in range(10):
@@ -202,7 +190,10 @@ while running:
 
     # Add new clouds if needed
     if len(clouds) < 10 and random.random() < cloud_spawn_probabilities[weather_phase]:
-        clouds.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
+        min_height = max(ground_level - 20000, 0)  # Minimum cloud height above ground
+        max_height = max(ground_level - 8000, 0)  # Maximum cloud height above ground
+        if min_height < max_height:
+            clouds.append([screen.get_width(), random.randint(min_height, max_height)])
 
     # Remove off-screen clouds
     clouds = [cloud for cloud in clouds if cloud[0] > -cloud_image.get_width()]
@@ -220,13 +211,19 @@ while running:
         speedtxt = font.render(f"[Speed: {speed:.2f}]", True, white)
         weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, white)
         speedlock_label = font.render(f"[Speed Lock: {speedlock}]", True, white)
-        altitude_text = font.render(f"Altitude: {altitude:.2f}", True, white)
+        altitude_text = font.render(f"[Altitude: {altitude:.2f}]", True, white)
     else:
         title = font.render("[Flight Sim]", True, gray)
         speedtxt = font.render(f"[Speed: {speed:.2f}]", True, gray)
         weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, gray)
         speedlock_label = font.render(f"[Speed Lock: {speedlock}]", True, gray)
-        altitude_text = font.render(f"Altitude: {altitude:.2f}", True, gray)
+        altitude_text = font.render(f"[Altitude: {altitude:.2f}]", True, gray)
+
+    # Define ground level
+    ground_level = plane_y + plane_rect.height  # Set ground level at the bottom of the plane
+
+    # Draw ground plane
+    pygame.draw.rect(screen, ground_color,(0, screen.get_height() - ground_level + 150, screen.get_width(), ground_level))
 
     # Draw text
     screen.blit(title, (1, 1))
@@ -234,8 +231,6 @@ while running:
     screen.blit(weather_label, (1, 40))
     screen.blit(speedlock_label, (1, 60))
     screen.blit(altitude_text, (1, 80))
-
-
 
     # Update the display
     pygame.display.flip()
