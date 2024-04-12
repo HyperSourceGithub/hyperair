@@ -15,6 +15,7 @@ clouds = []
 weather_phase = "clear"  # Initial weather phase
 speedlock = False
 
+
 # Colors
 gray = (128, 128, 128)
 white = (255, 255, 255)
@@ -27,6 +28,8 @@ cloud_spawn_probabilities = {
     "stormy": 0.04
 }
 
+# plane images for cycle
+planes = ["plane.png", "plane2.png", "plane3.png", "plane4.png"]
 
 # Function to rotate an image
 def rotate_image(image, angle):
@@ -67,7 +70,7 @@ pygame.display.set_caption("HyperAir v1.0.1")
 font = pygame.font.Font("courierprime.ttf", 15)  # (font, size)
 
 # Load the image of the plane
-plane_image = pygame.image.load("plane.png")
+plane_image = pygame.image.load(planes[0])
 
 # Get the rectangle of the plane image
 plane_rect = plane_image.get_rect()
