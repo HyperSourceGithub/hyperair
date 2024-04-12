@@ -30,14 +30,12 @@ cloud_spawn_probabilities = {
 
 # Function to rotate an image
 def rotate_image(image, angle):
-    """Rotate an image."""
     rotated_image = pygame.transform.rotate(image, angle)
     return rotated_image
 
 
 # Function to calculate altitude
 def calculate_altitude(plane_y, ground_level):
-    """Calculate the altitude of the plane relative to ground level."""
     return ground_level - plane_y
 
 
@@ -62,14 +60,14 @@ class Rain:
 pygame.init()
 
 # Set up the display window
-screen = pygame.display.set_mode((800, 600))  # (width, height)
-pygame.display.set_caption("Flight Sim")
+screen = pygame.display.set_mode((1000, 800))  # (width, height)
+pygame.display.set_caption("HyperAir v1.0.1")
 
 # Set up fonts
-font = pygame.font.Font("courierprime.ttf", 15)  # None uses the default system font, 36 is the font size
+font = pygame.font.Font("courierprime.ttf", 15)  # (font, size)
 
 # Load the image of the plane
-plane_image = pygame.image.load("plane.png")  # Provide the path to your plane image file
+plane_image = pygame.image.load("plane.png")
 
 # Get the rectangle of the plane image
 plane_rect = plane_image.get_rect()
@@ -82,10 +80,10 @@ plane_y = (screen.get_height() - plane_rect.height) / 2
 plane_rect.topleft = (plane_x, plane_y)
 
 # Load the cloud image
-cloud_image = pygame.image.load("cloud.png")  # Provide the path to your cloud image file
+cloud_image = pygame.image.load("cloud.png")
 
 # Load the icon image
-icon_image = pygame.image.load("jetengine.png")  # Provide the path to your icon image file
+icon_image = pygame.image.load("jetengine.png")
 
 # Set the window icon
 pygame.display.set_icon(icon_image)
