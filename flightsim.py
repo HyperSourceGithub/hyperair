@@ -30,6 +30,7 @@ cloud_spawn_probabilities = {
 
 # plane images for cycle
 planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/plane4.png"]
+plane_index = 0
 
 # Function to rotate an image
 def rotate_image(image, angle):
@@ -70,7 +71,7 @@ pygame.display.set_caption("HyperAir v1.0.1")
 font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
 
 # Load the image of the plane
-plane_image = pygame.image.load(planes[0])
+plane_image = pygame.image.load(planes[plane_index])
 
 # Get the rectangle of the plane image
 plane_rect = plane_image.get_rect()
@@ -125,6 +126,12 @@ while running:
                     weather_phase = "stormy"
                 elif weather_phase == "stormy":
                     weather_phase = "clear"
+            elif event.key == pygame.K_p:
+                if plane_index == 3:
+                    plane_index = 0
+                else: 
+                    plane_index += 1
+                plane_image = pygame.image.load(planes[plane_index])
 
     # Get the state of all keyboard keys
     keys = pygame.key.get_pressed()
