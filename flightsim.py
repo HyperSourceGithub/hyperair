@@ -4,17 +4,17 @@ except ImportError as e:
     print("Oh no! Pygame is missing!")
     print("Use `pip install pygame` to install it.")
     exit()
- 
+
 import math
 import random
 
 # Variables before functions
-speed = 0
+speed = 500
 pitch = 0
 clouds = []
+stars = []
 weather_phase = "clear"  # Initial weather phase
 speedlock = False
-
 
 # Colors
 gray = (128, 128, 128)
@@ -22,15 +22,16 @@ white = (255, 255, 255)
 
 # Cloud spawn probabilities for each weather phase
 cloud_spawn_probabilities = {
-    "clear": 0.01,
-    "cloudy": 0.02,
-    "rainy": 0.03,
-    "stormy": 0.04
+    "clear": 0.05,
+    "cloudy": 0.06,
+    "rainy": 0.07,
+    "stormy": 0.08
 }
 
 # plane images for cycle
 planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/plane4.png"]
 plane_index = 0
+
 
 # Function to rotate an image
 def rotate_image(image, angle):
@@ -86,6 +87,9 @@ plane_rect.topleft = (plane_x, plane_y)
 # Load the cloud image
 cloud_image = pygame.image.load("assets/cloud.png")
 
+# Load the star image
+star_image = pygame.image.load("assets/star.png")
+
 # Load the icon image
 icon_image = pygame.image.load("assets/jetengine.png")
 
@@ -129,7 +133,7 @@ while running:
             elif event.key == pygame.K_p:
                 if plane_index == 3:
                     plane_index = 0
-                else: 
+                else:
                     plane_index += 1
                 plane_image = pygame.image.load(planes[plane_index])
 
@@ -158,7 +162,7 @@ while running:
         speed -= 0.5 * dt
 
     # Clamp speed within reasonable limits
-    speed = max(0, min(speed, 5000))
+    speed = max(0, min(speed, 8000))
 
     # Update plane position
     plane_x += math.cos(math.radians(pitch)) * speed * dt
@@ -168,19 +172,40 @@ while running:
     rotated_plane_image = rotate_image(plane_image, pitch)
     rotated_plane_rect = rotated_plane_image.get_rect(center=plane_rect.center)
 
-    # Draw the rotated plane image
+    # Calculate altitude
+    altitude = calculate_altitude(plane_y, ground_level)
+
+    global sky_color
+
     # Change sky color based on weather_phase
-    if weather_phase == "clear":
-        screen.fill((135, 206, 235))  # Light blue
-    elif weather_phase == "cloudy":
-        screen.fill((185, 185, 185))  # Gray
-    elif weather_phase == "rainy":
-        screen.fill((201, 201, 201))  # Slate gray
-    elif weather_phase == "stormy":
-        screen.fill((107, 107, 107))  # Black
+    if altitude < 30000:
+        if weather_phase == "clear":
+            sky_color = (135, 206, 235)  # light blue
+        elif weather_phase == "cloudy":
+            sky_color = (185, 185, 185)  # a bit gray
+        elif weather_phase == "rainy":
+            sky_color = (201, 201, 201)  # darkish gray
+        elif weather_phase == "stormy":
+            sky_color = (107, 107, 107)  # really dark gray
+        screen.fill(sky_color)
+    else:
+        # Calculate the interpolation factor based on altitude
+        interpolation_factor = min(1, (
+                altitude - 30000) / 20000)  # Ensure that the interpolation factor is between 0 and 1
+
+        # Interpolate between sky color and black
+        black = (0, 0, 0)
+        interpolated_color = (
+            int(sky_color[0] * (1 - interpolation_factor) + black[0] * interpolation_factor),
+            int(sky_color[1] * (1 - interpolation_factor) + black[1] * interpolation_factor),
+            int(sky_color[2] * (1 - interpolation_factor) + black[2] * interpolation_factor)
+        )
+
+        # Fill the screen with the interpolated color
+        screen.fill(interpolated_color)
 
     # Add new rain particles if weather is rainy or stormy
-    if weather_phase in ["rainy", "stormy"]:
+    if weather_phase in ["rainy", "stormy"] and altitude < 10000:
         for _ in range(10):
             x = random.randint(0, screen.get_width())
             y = random.randint(0, screen.get_height())
@@ -197,11 +222,8 @@ while running:
             math.radians(pitch))  # Adjust cloud y-coordinate based on speed and pitch
 
     # Add new clouds if needed
-    if len(clouds) < 10 and random.random() < cloud_spawn_probabilities[weather_phase]:
-        min_height = max(ground_level - 20000, 0)  # Minimum cloud height above ground
-        max_height = max(ground_level - 8000, 0)  # Maximum cloud height above ground
-        if min_height < max_height:
-            clouds.append([screen.get_width(), random.randint(min_height, max_height)])
+    if len(clouds) < 20 and random.random() < cloud_spawn_probabilities[weather_phase] and 4000 < altitude < 10000:
+        clouds.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
 
     # Remove off-screen clouds
     clouds = [cloud for cloud in clouds if cloud[0] > -cloud_image.get_width()]
@@ -210,8 +232,22 @@ while running:
     for cloud in clouds:
         screen.blit(cloud_image, (cloud[0], cloud[1]))
 
-    # Calculate altitude
-    altitude = calculate_altitude(plane_y, ground_level)
+    # Move stars
+    for star in stars:
+        star[0] -= (100 + speed * 0.25) * dt  # Adjust star x-coordinate based on speed
+        star[1] += (100 + speed * 0.25) * dt * math.sin(
+            math.radians(pitch))  # Adjust star y-coordinate based on speed and pitch
+
+    # Add new stars if needed
+    if len(stars) < 20 and random.random() < 0.1 and altitude > 30000:
+        stars.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
+
+    # Remove off-screen stars
+    stars = [star for star in stars if star[0] > -star_image.get_width()]
+
+    # Draw stars
+    for star in stars:
+        screen.blit(star_image, (star[0], star[1]))
 
     # Update text
     if weather_phase == "stormy":
@@ -231,7 +267,8 @@ while running:
     ground_level = plane_y + plane_rect.height  # Set ground level at the bottom of the plane
 
     # Draw ground plane
-    pygame.draw.rect(screen, ground_color,(0, screen.get_height() - ground_level + 150, screen.get_width(), ground_level))
+    pygame.draw.rect(screen, ground_color,
+                     (0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level))
 
     # Draw text
     screen.blit(title, (1, 1))
@@ -245,4 +282,3 @@ while running:
 
 # Quit Pygame
 pygame.quit()
-
