@@ -16,6 +16,20 @@ except ImportError as e:
 import math
 import random
 
+# Check for updates
+import requests
+
+version = "v1.1.0"
+response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
+latest_version = response.url.split("/").pop()
+print(f"Using version {version}")
+if latest_version != version:
+  update = input(f"Latest version is {latest_version}, would you like to update? [Y/n]")
+  if update == "Y":
+    print("Please download the latest version at https://github.com/HyperSourceGithub/hyperair/releases/latest")
+  elif update == "n":
+    print("Update canceled, continuing with current version")
+
 # Variables before functions
 speed = 500
 pitch = 0
