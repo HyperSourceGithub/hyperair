@@ -1,3 +1,9 @@
+# Check python version
+import sys
+pyver = sys.version_info.major
+if pyver < 3:
+    print(f"Oh no! You currently have Python {pyver}. Please 
+
 try:
     import pygame
 except ImportError as e:
