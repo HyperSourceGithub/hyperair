@@ -2,7 +2,9 @@
 import sys
 pyver = sys.version_info.major
 if pyver < 3:
-    print(f"Oh no! You currently have Python {pyver}. Please 
+    print(f"Oh no! You currently have Python {pyver}. Please upgrade to Python 3 or above.")
+elif pyver >= 3:
+    print(f"Python {pyver} found, continuing...")
 
 try:
     import pygame
