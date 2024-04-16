@@ -19,22 +19,23 @@ import random
 # Check for updates
 import requests
 
-version = "v1.1.0"
+version = "v1.1.1"
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
 latest_version = response.url.split("/").pop()
 print(f"Using version {version}")
 if latest_version != version:
-  update = input(f"Latest version is {latest_version}, would you like to update? [Y/n]")
-  if update == "Y":
-    print("Please download the latest version at https://github.com/HyperSourceGithub/hyperair/releases/latest")
-  elif update == "n":
-    print("Update canceled, continuing with current version")
+    update = input(f"Latest version is {latest_version}, would you like to update? [Y/n] ")
+    if update == "Y":
+        print("Please download the latest version at https://github.com/HyperSourceGithub/hyperair/releases/latest")
+    elif update == "n":
+        print("Update canceled, continuing with current version")
 
 # Variables before functions
 speed = 500
 pitch = 0
 clouds = []
 stars = []
+birds = []
 weather_phase = "clear"  # Initial weather phase
 speedlock = False
 
@@ -88,7 +89,7 @@ pygame.init()
 
 # Set up the display window
 screen = pygame.display.set_mode((1000, 800))  # (width, height)
-pygame.display.set_caption("HyperAir v1.1.0")
+pygame.display.set_caption(f"HyperAir {version}")
 
 # Set up fonts
 font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
@@ -112,14 +113,21 @@ cloud_image = pygame.image.load("assets/cloud.png")
 # Load the star image
 star_image = pygame.image.load("assets/star.png")
 
+# Load the birb
+bird_image = pygame.image.load("assets/bird.png")
+
+# ==========================================================================
 # Load the icon image
 icon_image = pygame.image.load("assets/jetengine.png")
 
 # Set the window icon
 pygame.display.set_icon(icon_image)
 
+# ==========================================================================
+
+
 # Set up text
-title = font.render("[Flight Sim]", True, gray)
+title = font.render(f"[HyperAir {version}]", True, gray)
 speedtxt = font.render(f"[Speed: {speed:.2f}]", True, gray)
 weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, gray)
 
@@ -152,6 +160,8 @@ while running:
                     weather_phase = "stormy"
                 elif weather_phase == "stormy":
                     weather_phase = "clear"
+
+            # Plane Switcher
             elif event.key == pygame.K_p:
                 if plane_index == 3:
                     plane_index = 0
@@ -181,7 +191,7 @@ while running:
 
     # Apply drag to simulate air resistance
     if not speedlock:
-        speed -= 0.5 * dt
+        speed -= 0.2 * dt
 
     # Clamp speed within reasonable limits
     speed = max(0, min(speed, 8000))
@@ -227,7 +237,7 @@ while running:
         screen.fill(interpolated_color)
 
     # Add new rain particles if weather is rainy or stormy
-    if weather_phase in ["rainy", "stormy"] and altitude < 10000:
+    if weather_phase in ["rainy", "stormy"] and altitude < 12000:
         for _ in range(10):
             x = random.randint(0, screen.get_width())
             y = random.randint(0, screen.get_height())
@@ -244,7 +254,7 @@ while running:
             math.radians(pitch))  # Adjust cloud y-coordinate based on speed and pitch
 
     # Add new clouds if needed
-    if len(clouds) < 20 and random.random() < cloud_spawn_probabilities[weather_phase] and 4000 < altitude < 10000:
+    if len(clouds) < 20 and random.random() < cloud_spawn_probabilities[weather_phase] and 3000 < altitude < 12000:
         clouds.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
 
     # Remove off-screen clouds
@@ -254,6 +264,8 @@ while running:
     for cloud in clouds:
         screen.blit(cloud_image, (cloud[0], cloud[1]))
 
+    # ==========================================================================
+
     # Move stars
     for star in stars:
         star[0] -= (100 + speed * 0.25) * dt  # Adjust star x-coordinate based on speed
@@ -261,7 +273,7 @@ while running:
             math.radians(pitch))  # Adjust star y-coordinate based on speed and pitch
 
     # Add new stars if needed
-    if len(stars) < 20 and random.random() < 0.1 and altitude > 30000:
+    if len(stars) < 20 and random.random() < 0.4 and altitude > 35000:
         stars.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
 
     # Remove off-screen stars
@@ -271,33 +283,52 @@ while running:
     for star in stars:
         screen.blit(star_image, (star[0], star[1]))
 
+    # Move birds
+    for bird in birds:
+        bird[0] -= (100 + speed / 4) * dt  # Adjust bird x-coordinate based on speed
+        bird[1] += (100 + speed / 4) * dt * math.sin(
+            math.radians(pitch))  # Adjust bird y-coordinate based on speed and pitch
+
+    # Add new birds if needed
+    if len(birds) < 20 and random.random() < 0.005 and altitude < 12000:
+        birds.append([screen.get_width(), random.randint(0, screen.get_height() - 100)])
+
+    # Remove off-screen birds
+    birds = [bird for bird in birds if bird[0] > -bird_image.get_width()]
+
+    # Draw birds
+    for bird in birds:
+        screen.blit(bird_image, (bird[0], bird[1]))
+
     # Update text
     if weather_phase == "stormy":
-        title = font.render("[Flight Sim]", True, white)
+        title = font.render(f"[HyperAir {version}]", True, white)
         speedtxt = font.render(f"[Speed: {speed:.2f}]", True, white)
         weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, white)
         speedlock_label = font.render(f"[Speed Lock: {speedlock}]", True, white)
         altitude_text = font.render(f"[Altitude: {altitude:.2f}]", True, white)
+        pitch_text = font.render(f"[Pitch: {pitch:.2f}]", True, white)
     else:
-        title = font.render("[Flight Sim]", True, gray)
+        title = font.render(f"[HyperAir {version}]", True, gray)
         speedtxt = font.render(f"[Speed: {speed:.2f}]", True, gray)
         weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, gray)
         speedlock_label = font.render(f"[Speed Lock: {speedlock}]", True, gray)
         altitude_text = font.render(f"[Altitude: {altitude:.2f}]", True, gray)
+        pitch_text = font.render(f"[Pitch: {pitch:.2f}]", True, gray)
 
     # Define ground level
     ground_level = plane_y + plane_rect.height  # Set ground level at the bottom of the plane
 
     # Draw ground plane
-    pygame.draw.rect(screen, ground_color,
-                     (0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level))
+    pygame.draw.rect(screen, ground_color, (0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level))
 
-    # Draw text
+    # Draw text [w,h :(1000, 800)]
     screen.blit(title, (1, 1))
     screen.blit(speedtxt, (1, 20))
     screen.blit(weather_label, (1, 40))
     screen.blit(speedlock_label, (1, 60))
     screen.blit(altitude_text, (1, 80))
+    screen.blit(pitch_text, (1, 100))
 
     # Update the display
     pygame.display.flip()
