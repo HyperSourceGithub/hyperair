@@ -20,7 +20,7 @@ import time
 # Check for updates
 import requests
 
-version = "v1.1.4"
+version = "v1.1.5"
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
 latest_version = response.url.split("/").pop()
 print(f"Using version {version}")
@@ -190,6 +190,19 @@ while running:
                 else:
                     plane_index += 1
                 plane_image = pygame.image.load(planes[plane_index])
+
+        # Resize Checker
+        elif event.type == pygame.VIDEORESIZE:
+            # Get the rectangle of the plane image
+            plane_rect = plane_image.get_rect()
+
+            # Calculate the position of the plane to make it appear in the center of the screen
+            plane_x = (screen.get_width() - plane_rect.width) / 2
+            plane_y = (screen.get_height() - plane_rect.height) / 2
+
+            # Set the position of the plane
+            plane_rect.topleft = (plane_x, plane_y)
+    # ==========================================================================
 
     # Get the state of all keyboard keys
     keys = pygame.key.get_pressed()
