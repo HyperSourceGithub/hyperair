@@ -20,7 +20,7 @@ import time
 # Check for updates
 import requests
 
-version = "v1.1.2"
+version = "v1.1.4"
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
 latest_version = response.url.split("/").pop()
 print(f"Using version {version}")
