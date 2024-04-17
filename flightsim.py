@@ -15,6 +15,7 @@ except ImportError as e:
 
 import math
 import random
+import time
 
 # Check for updates
 import requests
@@ -55,6 +56,7 @@ cloud_spawn_probabilities = {
 planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/plane4.png"]
 plane_index = 0
 
+# ==========================================================================
 
 # Function to rotate an image
 def rotate_image(image, angle):
@@ -83,16 +85,36 @@ class Rain:
     def draw(self, surface):
         pygame.draw.line(surface, white, (self.x, self.y), (self.x, self.y + self.length), 1)
 
+# ==========================================================================
+
 
 # Initialize Pygame
 pygame.init()
 
 # Set up the display window
-screen = pygame.display.set_mode((1000, 800))  # (width, height)
+screen = pygame.display.set_mode((1000, 750), pygame.RESIZABLE)  # (width, height)
 pygame.display.set_caption(f"HyperAir {version}")
 
 # Set up fonts
 font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
+logofont = pygame.font.Font("fonts/RobotoMono-Regular.ttf", 70)
+
+# ==========================================================================
+
+# Loading Screen
+logo = pygame.image.load("assets/logo.png")
+loadingtitle = logofont.render("Hyper Studios", True, white)
+
+screen.fill((0, 0, 0))
+
+screen.blit(logo, (90, (screen.get_height() - logo.get_height()) // 2))
+screen.blit(loadingtitle, (360, (screen.get_height() - loadingtitle.get_height()) // 2))
+
+pygame.display.flip()
+
+time.sleep(5)
+
+# ==========================================================================
 
 # Load the image of the plane
 plane_image = pygame.image.load(planes[plane_index])
@@ -117,6 +139,7 @@ star_image = pygame.image.load("assets/star.png")
 bird_image = pygame.image.load("assets/bird.png")
 
 # ==========================================================================
+
 # Load the icon image
 icon_image = pygame.image.load("assets/jetengine.png")
 
@@ -124,7 +147,6 @@ icon_image = pygame.image.load("assets/jetengine.png")
 pygame.display.set_icon(icon_image)
 
 # ==========================================================================
-
 
 # Set up text
 title = font.render(f"[HyperAir {version}]", True, gray)
@@ -334,4 +356,4 @@ while running:
     pygame.display.flip()
 
 # Quit Pygame
-pygame.quit()
+# pygame.quit()
