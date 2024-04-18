@@ -1,0 +1,9 @@
+# Python virtual environments
+venv/
+.venv/
+
+# Cache
+utils/__pycache__
+
+# Files checksum
+utils/local_checksums.json

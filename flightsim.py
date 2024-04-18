@@ -7,10 +7,9 @@ elif pyver >= 3:
     print(f"Python {pyver} found, continuing...")
 
 try:
-    import pygame
+    import pygame, requests
 except ImportError as e:
-    print("Oh no! Pygame is missing!")
-    print("Use `pip install pygame` to install it.")
+    print("Missing dependencies! Install pygame and requests first: `pip install pygame requests`")
     exit()
 
 import math
@@ -18,7 +17,7 @@ import random
 import time
 
 # Check for updates
-import requests
+import utils.updater
 
 version = "v1.1.5"
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
@@ -26,9 +25,9 @@ latest_version = response.url.split("/").pop()
 print(f"Using version {version}")
 if latest_version != version:
     update = input(f"Latest version is {latest_version}, would you like to update? [Y/n] ")
-    if update == "Y":
-        print("Please download the latest version at https://github.com/HyperSourceGithub/hyperair/releases/latest")
-    elif update == "n":
+    if update.lower() == "y":
+        utils.updater.update()
+    elif update.lower() == "n":
         print("Update canceled, continuing with current version")
 
 # Variables before functions
@@ -57,23 +56,6 @@ planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/
 plane_index = 0
 
 # ==========================================================================
-
-# Function to rotate an image
-def rotate_image(image, angle):
-    rotated_image = pygame.transform.rotate(image, angle)
-    return rotated_image
-
-
-# Function to calculate altitude
-def calculate_altitude(plane_y, ground_level):
-    return ground_level - plane_y
-
-
-# Function to toggle speed lock
-def toggle_speed_lock():
-    global speedlock
-    speedlock = not speedlock
-
 
 # Rain particle class
 class Rain:
@@ -112,7 +94,7 @@ screen.blit(loadingtitle, (360, (screen.get_height() - loadingtitle.get_height()
 
 pygame.display.flip()
 
-time.sleep(5)
+time.sleep(3)
 
 # ==========================================================================
 
@@ -221,8 +203,9 @@ while running:
     elif keys[pygame.K_l]:
         pitch = 0
 
+    # Toggle speedlock
     if keys[pygame.K_k]:
-        toggle_speed_lock()
+        speedlock = not speedlock
 
     # Apply drag to simulate air resistance
     if not speedlock:
@@ -235,14 +218,26 @@ while running:
     plane_x += math.cos(math.radians(pitch)) * speed * dt
     plane_y -= math.sin(math.radians(pitch)) * speed * dt
 
+    # Lift simulation
+    # Data sources: 
+    #   https://www.grc.nasa.gov/www/k-12/VirtualAero/BottleRocket/airplane/lifteq.html
+    #   https://www.grc.nasa.gov/www/k-12/VirtualAero/BottleRocket/airplane/area.html
+    #   https://aerospaceweb.org/question/aerodynamics/q0252.shtml
+    # lift = 0.5 * d * v^2 * A * Cl
+    # Not a 100% accurate since it breaks things
+    lift = 0.5 * 0.302 * speed * 0.08 * 0.02 * math.cos(math.radians(pitch)) * dt
+
+    # Gravity
+    plane_y += 98 * dt - lift
+
+
     # Update plane rotation based on pitch
-    rotated_plane_image = rotate_image(plane_image, pitch)
+    rotated_plane_image = pygame.transform.rotate(plane_image, pitch)
     rotated_plane_rect = rotated_plane_image.get_rect(center=plane_rect.center)
 
     # Calculate altitude
-    altitude = calculate_altitude(plane_y, ground_level)
+    altitude = ground_level - plane_y
 
-    global sky_color
 
     # Change sky color based on weather_phase
     if altitude < 30000:
