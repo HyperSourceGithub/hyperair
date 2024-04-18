@@ -71,4 +71,4 @@ def update():
     if if_depends.lower() == "y":
         os.system('"pip install -r requirements.txt"')
     if if_run.lower() == "y":
-        os.system('"python main.py"')
+        os.system('"python3 main.py"')
