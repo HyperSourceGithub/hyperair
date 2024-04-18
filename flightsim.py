@@ -1,4 +1,5 @@
 # Check python version
+import os
 import sys
 pyver = sys.version_info.major
 if pyver < 3:
@@ -9,8 +10,12 @@ elif pyver >= 3:
 try:
     import pygame, requests
 except ImportError as e:
-    print("Missing dependencies! Install pygame and requests first: `pip install pygame requests`")
-    exit()
+    autoimport = input("Missing dependencies! Would you like to import them automagically? [Y/n]")
+    if autoimport.lower() == "y":
+        os.system("python3 -m pip install -r requirements.txt")
+    elif autoimport.lower() == "n":
+        print("Please run [python3 -m pip install -r requirements.txt] please.")
+        exit()
 
 import math
 import random
@@ -52,7 +57,7 @@ cloud_spawn_probabilities = {
 }
 
 # plane images for cycle
-planes = ["assets/plane.png", "assets/plane2.png", "assets/plane3.png", "assets/plane4.png"]
+planes = ["assets/planes/plane.png", "assets/planes/plane2.png", "assets/planes/plane3.png", "assets/planes/plane4.png"]
 plane_index = 0
 
 # ==========================================================================
