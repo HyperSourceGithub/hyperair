@@ -8,7 +8,9 @@ elif pyver >= 3:
     print(f"Python {pyver} found, continuing...")
 
 try:
-    import pygame, requests
+    import pygame
+    import requests
+    import asyncio
 except ImportError as e:
     autoimport = input("Missing dependencies! Would you like to import them automagically? [Y/n]")
     if autoimport.lower() == "y":
@@ -43,10 +45,12 @@ stars = []
 birds = []
 weather_phase = "clear"  # Initial weather phase
 speedlock = False
+global exitcode
 
 # Colors
 gray = (128, 128, 128)
 white = (255, 255, 255)
+red = (255, 0, 0)
 
 # Cloud spawn probabilities for each weather phase
 cloud_spawn_probabilities = {
@@ -156,6 +160,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            exitcode = "quit"
 
         # Check if the key 'W' is pressed to change the weather phase
         if event.type == pygame.KEYDOWN:
@@ -230,6 +235,7 @@ while running:
     # Calculate altitude
     altitude = ground_level - plane_y
 
+    global sky_color
 
     # Change sky color based on weather_phase
     if altitude < 30000:
@@ -241,11 +247,12 @@ while running:
             sky_color = (201, 201, 201)  # darkish gray
         elif weather_phase == "stormy":
             sky_color = (107, 107, 107)  # really dark gray
+        else:
+            sky_color = (135, 206, 235)
         screen.fill(sky_color)
     else:
         # Calculate the interpolation factor based on altitude
-        interpolation_factor = min(1, (
-                altitude - 30000) / 20000)  # Ensure that the interpolation factor is between 0 and 1
+        interpolation_factor = min(1, int((altitude - 30000) / 20000))  # Make the interpol factor is between 0 and 1
 
         # Interpolate between sky color and black
         black = (0, 0, 0)
@@ -322,6 +329,14 @@ while running:
     for bird in birds:
         screen.blit(bird_image, (bird[0], bird[1]))
 
+    # Crashes
+    if altitude < 240 :
+        if pitch < -3:
+            exitcode = "crash"
+            running = False
+        else:
+            pass
+
     # Update text
     if weather_phase == "stormy":
         title = font.render(f"[HyperAir {version}]", True, white)
@@ -355,5 +370,24 @@ while running:
     # Update the display
     pygame.display.flip()
 
+async def pause(time):
+    await asyncio.sleep(time)
+
+# Handle exit codes
+if exitcode == "crash":
+    crashtext = logofont.render("Crash!", True, red)
+
+    crashtext_y = screen.get_height() - crashtext.get_height() // 2
+    crashtext_x = screen.get_width() - crashtext.get_width() // 2
+
+    screen.blit(crashtext, (crashtext_x, crashtext_y))
+
+    pygame.display.flip()
+
+    asyncio.run(pause(15))
+
+elif exitcode == "quit":
+    pass
+
 # Quit Pygame
-# pygame.quit()
+pygame.quit()
