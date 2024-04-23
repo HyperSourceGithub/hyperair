@@ -11,6 +11,7 @@ try:
     import pygame
     import requests
     import asyncio
+    from pathlib import Path
 except ImportError as e:
     autoimport = input("Missing dependencies! Would you like to import them automagically? [Y/n]")
     if autoimport.lower() == "y":
@@ -36,6 +37,13 @@ if latest_version != version:
         utils.updater.update()
     elif update.lower() == "n":
         print("Update canceled, continuing with current version")
+
+# Get working directory
+workingdir = os.getcwd()
+path = Path("flightsim.py")
+parent = path.parent.absolute()
+if os.getcwd() != parent:
+    os.system(f"cd {parent}")
 
 # Variables before functions
 speed = 500
