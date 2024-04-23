@@ -69,6 +69,6 @@ def update():
         json.dump(checksums, checksum_file, indent=4)
 
     if if_depends.lower() == "y":
-        os.system('"pip install -r requirements.txt"')
+        os.system('"python3 -m pip install -r requirements.txt"')
     if if_run.lower() == "y":
-        os.system('"python3 main.py"')
+        os.system('"python3 flightsim.py"')
