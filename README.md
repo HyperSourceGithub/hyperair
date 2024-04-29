@@ -4,7 +4,6 @@ impressive, huh? <br />
 
 # Instructions!
 1. ## Install Python 3 if you haven't already. (any version of python3 is alright)
-    - If not installed, use `pip install pygame` or `python3 -m pip install pygame`. <br />
 2. ## Installation
     #### Short Explanation - if you've done this kind of thing before
     - Head to [releases](https://github.com/HyperSourceGithub/hyperair/releases), install the latest release, and unpack/extract it.
@@ -13,11 +12,11 @@ impressive, huh? <br />
     - Open the .zip file, and extract all the files. This is done automatically on Mac, and can be done on Windows by clicking **"extract all"** in the top bar. If you need help, I've done you a favor and searched it for you: [Mac](https://www.google.com/search?q=how+to+extract+files+from+a+zip+macos&oq=how+to+extract+files+from+a+zip+macos) | [Windows](https://www.google.com/search?q=how+to+extract+files+from+a+zip+windows) <br />
 3. ## Run the game
     #### Short Explanation
-    - Run it as you would a normal python program.
+    - Run `main.py` as you would a normal python program.
     #### Long Explanation
-    - Find this new folder created (not the .zip) and locate the file `flightsim.py`. <br />
+    - Find this new folder created (not the .zip) and locate the file `main.py`. <br />
     - Get the file path:
-        - Mac: **Right-click** the file, hold down **option** (or **alt** if your keyboard doesn't have it) and click **"Copy "flightsim.py" as pathname"** or something similar. <br />
+        - Mac: **Right-click** the file, hold down **option** (or **alt** if your keyboard doesn't have it) and click **"Copy "main.py" as pathname"** or something similar. <br />
         - Windows: **Right-click** the file and click **"Copy as path"**.
     - Run the file by opening your **terminal** (Mac) or **command prompt/PowerShell** (Windows) and typing `python3 <paste the path of the file by using ctrl-v or shift-ctrl-v>`.
     - Or alternatively, just open it in an IDE such as PyCharm or Visual Studio Code and run it as normal.

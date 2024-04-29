@@ -40,12 +40,7 @@ if latest_version != version:
     elif update.lower() == "n":
         print("Update canceled, continuing with current version")
 
-# Get working directory
-workingdir = os.getcwd()
-path = Path("flightsim.py")
-parent = path.parent.absolute()
-if os.getcwd() != parent:
-    os.system(f"cd {parent}")
+os.chdir(Path("flightsim.py").parent.absolute())
 
 # Variables before functions
 speed = 500
