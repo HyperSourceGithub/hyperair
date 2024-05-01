@@ -9,6 +9,7 @@ elif pyver >= 3:
 
 try:
     import pygame
+    from pygame import freetype
     import requests
     import asyncio
     from pathlib import Path
@@ -28,7 +29,7 @@ import time
 import utils.updater
 
 # =================== #
-version = "v1.1.9"
+version = "v1.1.10"
 # =================== #
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
 latest_version = response.url.split("/").pop()
@@ -40,7 +41,6 @@ if latest_version != version:
     elif update.lower() == "n":
         print("Update canceled, continuing with current version")
 
-os.chdir(Path("flightsim.py").parent.absolute())
 
 # Variables before functions
 speed = 500
@@ -94,6 +94,8 @@ pygame.display.set_caption(f"HyperAir {version}")
 # Set up fonts
 font = pygame.font.Font("fonts/courierprime.ttf", 15)  # (font, size)
 logofont = pygame.font.Font("fonts/RobotoMono-Regular.ttf", 70)
+crashfont = pygame.font.Font("fonts/RobotoMono-Bold.ttf", 90)
+emojis = pygame.freetype.Font("fonts/NotoColorEmoji-Regular.ttf", 90)
 
 # ==========================================================================
 
@@ -108,7 +110,7 @@ screen.blit(loadingtitle, (360, (screen.get_height() - loadingtitle.get_height()
 
 pygame.display.flip()
 
-time.sleep(3)
+pygame.time.delay(3000)
 
 # ==========================================================================
 
@@ -375,21 +377,20 @@ while running:
     # Update the display
     pygame.display.flip()
 
-async def pause(time):
-    await asyncio.sleep(time)
+# ==========================================================================
 
 # Handle exit codes
 if exitcode == "crash":
-    crashtext = logofont.render("Crash!", True, red)
+    crashtext = crashfont.render("you crashed lol", True, red)
 
-    crashtext_y = screen.get_height() - crashtext.get_height() // 2
-    crashtext_x = screen.get_width() - crashtext.get_width() // 2
+    crashtext_y = ((screen.get_height() - crashtext.get_height()) // 2)
+    crashtext_x = ((screen.get_width() - crashtext.get_width()) // 2)
 
     screen.blit(crashtext, (crashtext_x, crashtext_y))
 
     pygame.display.flip()
 
-    asyncio.run(pause(15))
+    pygame.time.delay(5000)
 
 elif exitcode == "quit":
     pass
