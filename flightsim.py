@@ -10,6 +10,7 @@ elif pyver >= 3:
 try:
     import pygame
     from pygame import freetype
+    import pygame.draw
     import requests
     import asyncio
     from pathlib import Path
@@ -80,6 +81,60 @@ class Rain:
 
     def draw(self, surface):
         pygame.draw.line(surface, white, (self.x, self.y), (self.x, self.y + self.length), 1)
+
+def wasted():
+    wasted = pygame.Surface((1000, 750))  # the size of your rect
+    wasted.set_alpha(150)  # alpha level
+    wasted.fill((180, 0, 0))  # this fills the entire surface
+    screen.blit(wasted, (0, 0))
+
+    bar_x = 5000
+    bar_y = 200
+    bar = pygame.Surface((bar_x, bar_y), pygame.SRCALPHA)
+    bar.set_alpha(190)
+    bar.fill((128, 128, 128))
+
+    rotatedbar = pygame.transform.rotate(bar, 8)
+    screen.blit(rotatedbar, (-40, -321))
+
+def draw_rectangle(x, y, width, height, color, rotation=0):
+    """Draw a rectangle, centered at x, y.
+
+    Arguments:
+      x (int/float):
+        The x coordinate of the center of the shape.
+      y (int/float):
+        The y coordinate of the center of the shape.
+      width (int/float):
+        The width of the rectangle.
+      height (int/float):
+        The height of the rectangle.
+      color (str):
+        Name of the fill color, in HTML format.
+    """
+    points = []
+
+    # The distance from the center of the rectangle to
+    # one of the corners is the same for each corner.
+    radius = math.sqrt((height / 2)**2 + (width / 2)**2)
+
+    # Get the angle to one of the corners with respect
+    # to the x-axis.
+    angle = math.atan2(height / 2, width / 2)
+
+    # Transform that angle to reach each corner of the rectangle.
+    angles = [angle, -angle + math.pi, angle + math.pi, -angle]
+
+    # Convert rotation from degrees to radians.
+    rot_radians = (math.pi / 180) * rotation
+
+    # Calculate the coordinates of each point.
+    for angle in angles:
+        y_offset = -1 * radius * math.sin(angle + rot_radians)
+        x_offset = radius * math.cos(angle + rot_radians)
+        points.append((x + x_offset, y + y_offset))
+
+    pygame.draw.polygon(screen, color, points)
 
 # ==========================================================================
 
@@ -381,12 +436,14 @@ while running:
 
 # Handle exit codes
 if exitcode == "crash":
-    crashtext = crashfont.render("you crashed lol", True, red)
+    wasted_img = pygame.image.load("assets/wasted.png")
 
-    crashtext_y = ((screen.get_height() - crashtext.get_height()) // 2)
-    crashtext_x = ((screen.get_width() - crashtext.get_width()) // 2)
+    wasted_y = ((screen.get_height() - wasted_img.get_height()) // 2)
+    wasted_x = ((screen.get_width() - wasted_img.get_width()) // 2)
 
-    screen.blit(crashtext, (crashtext_x, crashtext_y))
+    wasted()
+
+    screen.blit(wasted_img, (wasted_x, wasted_y))
 
     pygame.display.flip()
 
