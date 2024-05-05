@@ -30,7 +30,7 @@ import time
 import utils.updater
 
 # =================== #
-version = "v1.1.10"
+version = "v1.2.0"
 # =================== #
 response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
 latest_version = response.url.split("/").pop()
