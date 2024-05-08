@@ -5,15 +5,22 @@
 import os
 from pathlib import Path
 import time
+import animation
 
-print("CWD", os.getcwd())
+print("Checking directories...")
+time.sleep(1)
+print("CWD: ", os.getcwd())
 
 # Change directory
 os.chdir(Path(__file__).parent.absolute())
-print("Parent", Path(__file__).parent.absolute())
+print("Parent: ", Path(__file__).parent.absolute())
 
-print("CWD", os.getcwd())
-time.sleep(2)
+print("CWD: ", os.getcwd())
+
+@animation.wait('bar')
+def long_running_function():
+    time.sleep(4)
+    return
 
 
 import flightsim
