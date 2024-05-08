@@ -5,8 +5,13 @@
 import os
 from pathlib import Path
 import time
-import animation
+from collpy import *
+import random
 
+os.system('clear')
+print("Welcome to HyperAir!")
+print("Beginning loading process...")
+print("")
 print("Checking directories...")
 time.sleep(1)
 print("CWD: ", os.getcwd())
@@ -16,11 +21,17 @@ os.chdir(Path(__file__).parent.absolute())
 print("Parent: ", Path(__file__).parent.absolute())
 
 print("CWD: ", os.getcwd())
+print("")
 
-@animation.wait('bar')
-def long_running_function():
-    time.sleep(4)
-    return
+loadbar = Load_bar(name="Loading Data... ", length=60, style='#')
 
+val = 100
+
+delay = random.randint(2, 6) / 100
+for i in loadbar.iter(val): # or string or val
+    e = i
+    time.sleep(delay)
+
+print("Done!")  
 
 import flightsim
