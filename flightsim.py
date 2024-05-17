@@ -1,11 +1,6 @@
 # Check python version
 import os
 import sys
-pyver = sys.version_info.major
-if pyver < 3:
-    print(f"Oh no! You currently have Python {pyver}. Please upgrade to Python 3 or above.")
-elif pyver >= 3:
-    print(f"Python {pyver} found, continuing...")
 
 try:
     import pygame
@@ -165,7 +160,7 @@ screen.blit(loadingtitle, (360, (screen.get_height() - loadingtitle.get_height()
 
 pygame.display.flip()
 
-pygame.time.delay(3000)
+# pygame.time.delay(3000)
 
 # ==========================================================================
 
@@ -191,6 +186,9 @@ star_image = pygame.image.load("assets/star.png")
 # Load the birb
 bird_image = pygame.image.load("assets/bird.png")
 
+# Load the haus
+house_image = pygame.image.load("assets/building.png")
+
 # ==========================================================================
 
 # Load the icon image
@@ -208,6 +206,13 @@ weather_label = font.render(f"[Weather: {weather_phase.capitalize()}]", True, gr
 
 # Define ground color
 ground_color = (34, 139, 34)  # Green color for the ground
+
+ground_level = plane_y + plane_rect.height  # Set ground level at the bottom of the plane
+
+# Define the actual ground level: where the rectangle's top is.
+absolute_ground_y = screen.get_height() - ground_level + 351
+
+groundRect = pygame.Rect(0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level)
 
 # Game Loop
 running = True
@@ -392,12 +397,21 @@ while running:
         screen.blit(bird_image, (bird[0], bird[1]))
 
     # Crashes
+    if plane_rect.colliderect(groundRect):
+        exitcode = "crash"
+        running = False
+    else:
+        pass
+
+
+    '''
     if altitude < 240 :
         if pitch < -3:
             exitcode = "crash"
             running = False
         else:
             pass
+    '''
 
     # Update text
     if weather_phase == "stormy":
@@ -418,8 +432,14 @@ while running:
     # Define ground level
     ground_level = plane_y + plane_rect.height  # Set ground level at the bottom of the plane
 
+    # Define the actual ground level: where the rectangle's top is.
+    absolute_ground_y = screen.get_height() - ground_level + 351
+
+    # Ground rectangle
+    groundRect = pygame.Rect(0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level)
+
     # Draw ground plane
-    pygame.draw.rect(screen, ground_color, (0, screen.get_height() - ground_level + 300, screen.get_width(), ground_level))
+    pygame.draw.rect(screen, ground_color, groundRect)
 
     # Draw text [w,h :(1000, 800)]
     screen.blit(title, (1, 1))
@@ -428,6 +448,9 @@ while running:
     screen.blit(speedlock_label, (1, 60))
     screen.blit(altitude_text, (1, 80))
     screen.blit(pitch_text, (1, 100))
+
+    # Buildings!
+    # screen.blit(house_image, (((screen.get_width() - house_image.get_width()) //2 ), (absolute_ground_y - house_image.get_height())))
 
     # Update the display
     pygame.display.flip()
