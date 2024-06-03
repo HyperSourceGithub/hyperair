@@ -1,7 +1,13 @@
+\*mic crackle\* is this thing on? <br />
 # HyperAir
 Welcome to HyperAir, Pilot! Navigate four amazingly controlled [Bombardier](https://bombardier.com/en/our-jets) (more planes coming soon!) jets through various weather (and space for some reason, i swear i didn't implement that on purpose, it was a "typo", my hand "slipped") for an endless amount of time. <br />
 impressive, huh? <br /> <br />
 Download: <button style="border:2px solid white; border-radius: 12px; background-color: black; padding: 8px; font-size: 18px;"><a href="https://hypersource.itch.io/hyperair">itch.io</a></button>
+
+This file covers some useful stuff. Here are the contents: <br />
+[Installing (.zip file)](https://github.com/HyperSourceGithub/hyperair/README.md#Instructions!)
+
+
 
 ### If you downloaded the .zip file, use this:
 # Instructions!
