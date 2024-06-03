@@ -1,8 +1,10 @@
 # HyperAir
-Welcome to HyperAir, Pilot! Navigate four amazingly controlled [Bombardier](https://bombardier.com/en/our-jets) jets through various weather (and space for some reason, i swear i didn't implement that on purpose, it was a "typo") for an endless amount of time. <br />
+Welcome to HyperAir, Pilot! Navigate four amazingly controlled [Bombardier](https://bombardier.com/en/our-jets) (more planes coming soon!) jets through various weather (and space for some reason, i swear i didn't implement that on purpose, it was a "typo", my hand "slipped") for an endless amount of time. <br />
 impressive, huh? <br /> <br />
-<button style="border:2px solid white; border-radius: 12px; background-color: black; padding: 8px; font-size: 18px;"><a href="https://hypersource.itch.io/hyperair">itch.io</a></button>
-# Instructions! [PYTHON FILE(S) ONLY - DO THIS IF YOU DOWNLOADED THE .ZIP]
+Download: <button style="border:2px solid white; border-radius: 12px; background-color: black; padding: 8px; font-size: 18px;"><a href="https://hypersource.itch.io/hyperair">itch.io</a></button>
+
+### If you downloaded the .zip file, use this:
+# Instructions!
 1. ### Install Python 3 if you haven't already. (any version of python3 is alright)
 2. ### Installation
     #### Short Explanation - if you've done this kind of thing before
@@ -12,7 +14,7 @@ impressive, huh? <br /> <br />
     - Open the .zip file, and extract all the files. This is done automatically on Mac, and can be done on Windows by clicking **"extract all"** in the top bar. If you need help, I've done you a favor and searched it for you: [Mac](https://www.google.com/search?q=how+to+extract+files+from+a+zip+macos&oq=how+to+extract+files+from+a+zip+macos) | [Windows](https://www.google.com/search?q=how+to+extract+files+from+a+zip+windows) <br />
 3. ### Run the game
     #### Short Explanation
-    - Run `main.py` as you would a normal python program.
+    - Find and run `main.py` as you would a normal python program.
     #### Long Explanation
     - Find this new folder created (not the .zip) and locate the file `main.py`. <br />
     - Get the file path:
@@ -28,3 +30,5 @@ impressive, huh? <br /> <br />
 `l`: levels plane <br />
 `up/down arrow keys`: change speed <br />
 `left/right arrow keys`: change pitch <br />
+`p`: changes plane <br />
+(psst... go up, like really up. something cool happens.)
