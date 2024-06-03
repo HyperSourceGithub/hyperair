@@ -5,8 +5,8 @@ Download: <button style="border:2px solid white; border-radius: 12px; background
 
 ### If you downloaded the .zip file, use this:
 # Instructions!
-1. ### Install Python 3 if you haven't already. (any version of python3 is alright)
-2. ### Installation
+1. Install Python 3 if you haven't already. (any version of python3 is alright)
+2. ### Installing the game
     #### Short Explanation - if you've done this kind of thing before
     - Head to [releases](https://github.com/HyperSourceGithub/hyperair/releases), install the latest release, and unpack/extract it.
     #### Long Explanation - if you're new to this
