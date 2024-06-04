@@ -5,8 +5,9 @@ impressive, huh? <br /> <br />
 Download: <button style="border:2px solid white; border-radius: 12px; background-color: black; padding: 8px; font-size: 18px;"><a href="https://hypersource.itch.io/hyperair">itch.io</a></button>
 
 This file covers some useful stuff. Here are the contents: <br />
-[Installing (.zip file)](https://github.com/HyperSourceGithub/hyperair/README.md#Instructions!)
-
+[Installing (.zip file)](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#instructions) <br />
+[Controls](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#controls) <br />
+and lastly, [contributing](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#contributing) <br />
 
 
 ### If you downloaded the .zip file, use this:
@@ -38,3 +39,6 @@ This file covers some useful stuff. Here are the contents: <br />
 `left/right arrow keys`: change pitch <br />
 `p`: changes plane <br />
 (psst... go up, like really up. something cool happens.)
+
+# Contributing
+work in progress
