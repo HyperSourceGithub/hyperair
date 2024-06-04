@@ -10,7 +10,7 @@ try:
     import asyncio
     from pathlib import Path
 except ImportError as e:
-    autoimport = input("Missing dependencies! Would you like to import them automagically? [Y/n]")
+    autoimport = input("Missing dependencies! Would you like to import them super-automagically? [Y/n]")
     if autoimport.lower() == "y":
         os.system("python3 -m pip install -r requirements.txt")
     elif autoimport.lower() == "n":
@@ -25,18 +25,23 @@ import time
 import utils.updater
 
 # =================== #
-version = "v1.2.0"
+version = "v1.2.1"
 # =================== #
-response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
-latest_version = response.url.split("/").pop()
-print(f"Using version {version}")
-if latest_version != version:
-    update = input(f"Latest version is {latest_version}, would you like to update? [Y/n] ")
-    if update.lower() == "y":
-        utils.updater.update()
-    elif update.lower() == "n":
-        print("Update canceled, continuing with current version")
-
+'''
+hasWifi = input("Are you currently connected to WiFi? (Y/n): ")
+if hasWifi.lower() == "y":
+    response = requests.get("https://github.com/HyperSourceGithub/hyperair/releases/latest")
+    latest_version = response.url.split("/").pop()
+    print(f"Using version {version}")
+    if latest_version != version:
+        update = input(f"Latest version is {latest_version}, would you like to update? [Y/n] ")
+        if update.lower() == "y":
+            utils.updater.update()
+        elif update.lower() == "n":
+            print("Update canceled, continuing with current version")
+else:
+    print("Okay, continuing without WiFi")
+'''
 
 # Variables before functions
 speed = 500
@@ -44,6 +49,7 @@ pitch = 0
 clouds = []
 stars = []
 birds = []
+buildings = []
 weather_phase = "clear"  # Initial weather phase
 speedlock = False
 global exitcode
@@ -186,9 +192,6 @@ star_image = pygame.image.load("assets/star.png")
 # Load the birb
 bird_image = pygame.image.load("assets/bird.png")
 
-# Load the haus
-house_image = pygame.image.load("assets/building.png")
-
 # ==========================================================================
 
 # Load the icon image
@@ -319,14 +322,14 @@ while running:
         screen.fill(sky_color)
     else:
         # Calculate the interpolation factor based on altitude
-        interpolation_factor = min(1, int((altitude - 30000) / 20000))  # Make the interpol factor is between 0 and 1
+        interpolation_factor = min(1, (altitude - 30000) / 20000)  # Make the interpol factor is between 0 and 1
 
         # Interpolate between sky color and black
         black = (0, 0, 0)
         interpolated_color = (
-            int(sky_color[0] * (1 - interpolation_factor) + black[0] * interpolation_factor),
-            int(sky_color[1] * (1 - interpolation_factor) + black[1] * interpolation_factor),
-            int(sky_color[2] * (1 - interpolation_factor) + black[2] * interpolation_factor)
+            float(sky_color[0] * (1 - interpolation_factor) + black[0] * interpolation_factor),
+            float(sky_color[1] * (1 - interpolation_factor) + black[1] * interpolation_factor),
+            float(sky_color[2] * (1 - interpolation_factor) + black[2] * interpolation_factor)
         )
 
         # Fill the screen with the interpolated color
@@ -395,6 +398,29 @@ while running:
     # Draw birds
     for bird in birds:
         screen.blit(bird_image, (bird[0], bird[1]))
+
+    # buildings = [] at start
+
+    building_images = ["assets/buildings/house1.png"]
+    # define building image
+    buildImage = random.choice(building_images)
+
+    # Generate buildings
+    if len(buildings) < 5 and random.random() < 1:
+        buildings.append([screen.get_width(), absolute_ground_y - pygame.image.load(buildImage).get_height() + 5, buildImage]) # only x value, y for ground
+
+    # Move buildings
+    for b in buildings:
+        b[0] -= (100 + speed / 4) * dt
+        b[1] = absolute_ground_y - pygame.image.load(buildImage).get_height() + 5
+
+    # Remove off-screens
+    buildings = [b for b in buildings if b[0] > -pygame.image.load(buildImage).get_width()]
+
+    # Draw buildings
+    for b in buildings:
+        screen.blit(b[2], (b[0], b[1]))
+
 
     # Crashes
     if plane_rect.colliderect(groundRect):

@@ -2,13 +2,20 @@
 # If you haven't already, read the README please!
 # This file is just to ensure that we don't mess up and get errors for stuff.
 
-import os
-from pathlib import Path
-import time
-from collpy import *
-import random
+try:
+    import os
+    from pathlib import Path
+    import time
+    from collpy import *
+    import random
+except ImportError as e:
+    autoimport = input("Missing dependencies! Would you like to import them super-automagically? [Y/n]")
+    if autoimport.lower() == "y":
+        os.system("python3 -m pip install -r requirements.txt")
+    elif autoimport.lower() == "n":
+        print("Please run [python3 -m pip install -r requirements.txt] please.")
+        exit()
 
-<<<<<<< HEAD
 os.system('clear')
 print("Welcome to HyperAir!")
 print("Beginning loading process...")
@@ -16,7 +23,7 @@ print("")
 print("Checking directories...")
 time.sleep(1)
 print("CWD: ", os.getcwd())
-=======
+
 import sys
 pyver = sys.version_info.major
 if pyver < 3:
@@ -26,7 +33,6 @@ elif pyver >= 3:
 
 
 print("CWD", os.getcwd())
->>>>>>> 26e21a0 (Added a simple house (not in game, but the code is there and it works) and made some changes to the python version-checker and also added better crash physics.)
 
 # Change directory
 os.chdir(Path(__file__).parent.absolute())
