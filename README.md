@@ -7,7 +7,7 @@ Download: <button style="border:2px solid white; border-radius: 12px; background
 This file covers some useful stuff. Here are the contents: <br />
 [Installing (.zip file)](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#instructions) <br />
 [Controls](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#controls) <br />
-and lastly, [contributing](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#contributing) <br />
+and lastly, [contributing](https://github.com/HyperSourceGithub/hyperair?tab=readme-ov-file#contributing-github-account-required) <br />
 
 
 ### If you downloaded the .zip file, use this:
