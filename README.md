@@ -40,5 +40,5 @@ and lastly, [contributing](https://github.com/HyperSourceGithub/hyperair?tab=rea
 `p`: changes plane <br />
 (psst... go up, like really up. something cool happens.)
 
-# Contributing
-work in progress
+# Contributing (GitHub account required)
+Github's made a tutorial on this... i recommend you follow it (i suck at explaining this) [here](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project)
