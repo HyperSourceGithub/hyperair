@@ -38,7 +38,7 @@ and lastly, [contributing](https://github.com/HyperSourceGithub/hyperair?tab=rea
 `up/down arrow keys`: change speed <br />
 `left/right arrow keys`: change pitch <br />
 `p`: changes plane <br />
-(psst... go up, like really up. something cool happens.)
+(psst... go up, like really up. in the game. like over 30k altitude. something cool happens.)
 
 # Contributing (GitHub account required)
 Github's made a tutorial on this... i recommend you follow it (i suck at explaining this) [here](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project)
